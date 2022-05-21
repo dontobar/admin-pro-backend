@@ -11,12 +11,15 @@ const app = express();
 //configurar CORS
 app.use( cors() )
 
+//lectura y parseo del body
+app.use( express.json() );
+
 //base de datos
 dbConnection();
 
-//usuario y  pass mongo
-//usuario : MEAN_HOSPITAL
-//pass:LYVpcGnKYIP0e0uk
+//Rutas
+app.use('/api/usuarios',require('./routes/usuarios') );
+app.use('/api/login',require('./routes/auth') );
 
 
 //Rutas
