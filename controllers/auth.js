@@ -82,14 +82,26 @@ try {
  const renewToken = async(req,res = response) =>{
      const uid = req.uid;
 
-     //Generar el TOKEN - JWT
-     const token = await generarJWT(uid);
 
+     //Generar el TOKEN - JWT
+    const token = await generarJWT(uid)
+
+    //Obtener el usuario por UID
+     const usuario = await Usuario.findById(uid)
+
+     
      res.json({
-         ok:true,
-         token
-     })
- }
+        ok:true,
+        token,
+        usuario
+    })
+
+    
+    }
+    
+        
+
+
 
  module.exports = {
      login,
