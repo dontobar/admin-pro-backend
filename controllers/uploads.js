@@ -46,6 +46,7 @@ const fileupload = (req,res= response) =>{
       //Path para guardar la imagen
       const path = `./uploads/${tipo}/${nombreArchivo}`;
     
+    
       // Mover la imagen
       file.mv(path, (err)=> {
         if (err){
@@ -57,7 +58,7 @@ const fileupload = (req,res= response) =>{
         }
           
         // Actualizar base de datos
-        actualizarImagen(tipo,id,path,nombreArchivo);
+        actualizarImagen(tipo,id,nombreArchivo);
     
         res.json({
             ok:true,
