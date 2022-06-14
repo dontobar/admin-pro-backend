@@ -50,7 +50,7 @@ const getDocumentosCoeccion = async(req,res = response)=>{
     
         case 'usuarios':
             data = await Usuario.find({nombre:regex})
-                                .populate('usuario','nombre img');
+                                .populate('nombre img');
             break;
         
         default:
