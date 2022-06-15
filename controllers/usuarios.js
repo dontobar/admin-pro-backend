@@ -94,7 +94,7 @@ const crearUsuarios = async(req,res= response)=>{
 
             if(usuarioDB.email !== email ){
                
-            }else{
+            
                const existeEmail = await Usuario.findOne({email});
                if(existeEmail){
                    return res.status(400).json({
