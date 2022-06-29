@@ -49,35 +49,50 @@ const { googleVerify } = require('../helpers/google-verify');
 
  const googleSignIn = async(req,res= response) =>{
 
-    const googleToken = req.body.token;
+    try {
+        const {email,name,picture} = await googleVerify(req.body.token);
 
-try {
+        const usuarioDB = await Usuario.findOne({email});
+        let usuario;
 
-    await googleVerify(googleToken);
+        if(!usuarioDB){
+            usuario = new Usuario({
+                nombre:name,
+                email,
+                password:'@@@',
+                img:picture,
+                google:true
+            })
+        }else{
+            usuario = usuarioDB;
+            usuario.google = true;
+            //usuario.password = '@@@'
+        }
 
-    res.json({
-        ok:true,
-        msg:'Google Signin',
-        googleToken
-    });
-    
-} catch (error) {
+        //Guardar usuario
+        await usuario.save();
 
-    
+        //Generar el TOKEN -JWT
+        const token = await generarJWT(usuario.id);
 
-    res.json({
-        ok:false,
-        msg:'Token incorrecto'
-    });
-    
+        res.json({
+            ok:true,
+            email,name,picture,
+            token
+            }); 
+
+    } catch (error) {
+        console.log(error)
+        res.status(400).json({
+            ok:false,
+            msg:'token de google no es correcto'
+            }); 
+    }
+
+
 }
 
-     res.status(401).json({
-         ok:false,
-         msg:'Token no es correcto',
-         googleToken
-     });
- }
+
 
  const renewToken = async(req,res = response) =>{
      const uid = req.uid;
