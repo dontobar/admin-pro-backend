@@ -51,24 +51,27 @@ const { getMenuFrontEnd } = require('../helpers/menu-frontend');
 
  const googleSignIn = async(req,res= response) =>{
 
-    try {
-        const {email,name,picture} = await googleVerify(req.body.token);
+   // const {id_token} = req.body;
 
-        const usuarioDB = await Usuario.findOne({email});
+    try {
+        const {correo,nombre,img} = await googleVerify(req.body.token);
+        //const {email,name,picture} = await googleVerify(req.body.token);
+
+        const usuarioDB = await Usuario.findOne({correo});
         let usuario;
 
         if(!usuarioDB){
             usuario = new Usuario({
-                nombre:name,
-                email,
+                nombre,
+                email:correo,
                 password:'@@@',
-                img:picture,
+                img,
+                role:'USER_ROLE',
                 google:true
             })
         }else{
             usuario = usuarioDB;
             usuario.google = true;
-            //usuario.password = '@@@'
         }
 
         //Guardar usuario
@@ -79,7 +82,7 @@ const { getMenuFrontEnd } = require('../helpers/menu-frontend');
 
         res.json({
             ok:true,
-            email,name,picture,
+            correo,nombre,img,
             token,
             menu:getMenuFrontEnd(usuario.role)
             }); 

@@ -14,3 +14,5 @@ uploads/usuarios/**.gif
 uploads/medicos/**.jpg
 uploads/medicos/**.png
 uploads/medicos/**.gif
+
+.env
